@@ -1,14 +1,31 @@
 const assert = require('assert')
 
-class Dollar {
-    constructor(amount) {
-        this.amount = amount;
+
+class Money {
+    constructor(amount, currency) {
+        this.amount = amount
+        this.currency = currency
     }
+
     times(multiplier) {
-        return new Dollar(this.amount * multiplier)
+        return new Money(this.amount * multiplier, this.currency)
+    }
+
+    divide(divisor) {
+        return new Money(this.amount / divisor, this.currency)
     }
 }
 
-fiver = new Dollar(5)
-tenner = fiver.times(2)
-assert.strictEqual(tenner.amount, 10)
+const fiver = new Money(5, "USD")
+const tenDollars = new Money(10, "USD")
+assert.deepStrictEqual(fiver.times(2), tenDollars)
+
+tenEuros = new Money(10, "EUR")
+twentyEuros = tenEuros.times(2)
+assert.deepStrictEqual(tenEuros.times(2), twentyEuros)
+assert.strictEqual(twentyEuros.currency, "EUR")
+
+originalMoney = new Money(4002, "KRW")
+actualMoneyAfterDivision = originalMoney.divide(4)
+expectedMoneyAfterDivision = new Money(1000.5, "KRW")
+assert.deepStrictEqual(actualMoneyAfterDivision, expectedMoneyAfterDivision)
